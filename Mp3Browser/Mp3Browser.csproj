@@ -55,7 +55,9 @@
     <Compile Include="TreeNodes\DataNode.cs" />
     <Compile Include="TreeNodes\Folder.cs" />
     <Compile Include="TreeNodes\IReadable.cs" />
-    <Compile Include="TreeNodes\WavFile.cs" />
+    <Compile Include="TreeNodes\Id3Tag.cs" />
+    <Compile Include="TreeNodes\Mp3Header.cs" />
+    <Compile Include="TreeNodes\Mp3File.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="BrowserForm.resx">
