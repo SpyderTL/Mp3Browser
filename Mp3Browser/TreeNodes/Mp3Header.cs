@@ -44,14 +44,16 @@ namespace Mp3Browser.TreeNodes
 				var original = (header[3] >> 1) & 0x01;
 				var emphasis = (header[3] >> 0) & 0x01;
 
-				var bitRates = new int[] { 0, 0, 0, 0, 0, 0, 0, 96000, 112000, 128000, 192000, 256000, 320000 };
-				var sampleRates = new int[] { 44100, 48000, 32000 };
+				var bitRates = new int[] { 0, 8000, 16000, 24000, 32000, 40000, 48000, 56000, 64000, 80000, 96000, 112000, 128000, 144000, 160000 };
+				var sampleRates = new int[] { 22050, 24000, 16000 };
 
-				if (bitRate < bitRates.Length)
+				if (bitRate < bitRates.Length &&
+					sampleRate < sampleRates.Length &&
+					bitRates[bitRate] != 0)
+				{
 					bitRate = bitRates[bitRate];
-
-				if (sampleRate < sampleRates.Length)
 					sampleRate = sampleRates[sampleRate];
+				}
 
 				return new
 				{

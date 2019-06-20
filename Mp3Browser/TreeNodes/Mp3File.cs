@@ -63,19 +63,32 @@ namespace Mp3Browser.TreeNodes
 						var original = (header[3] >> 2) & 0x01;
 						var emphasis = (header[3] >> 0) & 0x02;
 
-						var bitRates = new int[] { 0, 0, 0, 0, 0, 0, 0, 96000, 112000, 128000, 192000, 256000, 320000 };
+						var bitRates = new int[] { 0, 8000, 16000, 24000, 32000, 40000, 48000, 56000, 64000, 80000, 96000, 112000, 128000, 144000, 160000 };
+						//var bitRates = new int[] { 0, 32000, 40000, 48000, 56000, 64000, 80000, 96000, 112000, 128000, 160000, 192000, 224000, 256000, 320000 };
+						//var sampleRates = new int[] { 22050, 24000, 16000 };
 						var sampleRates = new int[] { 44100, 48000, 32000 };
 
-						if (bitRate < bitRates.Length)
+						if (bitRate < bitRates.Length &&
+							sampleRate < sampleRates.Length &&
+							bitRates[bitRate] != 0)
+						{
 							bitRate = bitRates[bitRate];
-
-						if (sampleRate < sampleRates.Length)
 							sampleRate = sampleRates[sampleRate];
 
-						Nodes.Add(new Mp3Header { Text = "MP3 Header", Offset = (int)position, Source = this });
+							var dataLength = ((144 * bitRate) / sampleRate) + padding - 4;
+
+							Nodes.Add(new Mp3Header { Text = "MP3 Header", Offset = (int)position, Source = this });
+
+							//if (noCrc == 0)
+							//	reader.ReadBytes(2);
+
+							var data = reader.ReadBytes((int)dataLength);
+						}
+						else
+							reader.BaseStream.Seek(-3, SeekOrigin.Current);
 					}
 					else
-						reader.BaseStream.Seek(1, SeekOrigin.Current);
+						reader.BaseStream.Seek(-3, SeekOrigin.Current);
 				}
 			}
 		}
